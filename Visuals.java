@@ -25,10 +25,10 @@ public class Visuals  extends JPanel  {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		int s = 10;
+		int s = 100;
 		int xshift = 100;
 		g.setColor(Color.BLACK);
-		g.fillRect(0 + xshift, 0, 103 * s, 103* s);
+		g.fillRect(0 + xshift, 0, 7 * s, 7* s);
 		
 		
 		
@@ -49,9 +49,9 @@ public class Visuals  extends JPanel  {
 		int counter = 0;
 		int other = 0;
 		
-		for(int i = 1; i < 102; i++) {
+		for(int i = 1; i < 6; i++) {
 			
-			for(int j = 1; j < 102; j++) {
+			for(int j = 1; j < 6; j++) {
 				if(grid.state(i, j) == 1) {
 					counter++;
 					g.fillRect(((i) * s) + xshift, (j) * s, 1 * s, 1 *s);
@@ -64,7 +64,7 @@ public class Visuals  extends JPanel  {
 			
 		}
 		
-		double d = (double)counter/(101 * 101);
+		double d = (double)counter/(5 * 5);
 		
 		System.out.println(d);
 		

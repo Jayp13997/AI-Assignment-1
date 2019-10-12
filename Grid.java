@@ -10,20 +10,20 @@ public class Grid {
 	
 	
 	public Grid() {// creates grid and sets all cells as unvisited(state = 0)
-		 cells = new Cell[103][103];
+		 cells = new Cell[7][7];
 		 
-		 for(int i = 0; i < 103; i++) {
-			 for(int j = 0; j < 103; j++) {
+		 for(int i = 0; i < 7; i++) {
+			 for(int j = 0; j < 7; j++) {
 				 cells[i][j] = new Cell();
 			 
 			 }
 		 }
 		
-		for(int i = 0; i < 103;i++) {
-			for(int j = 0; j < 103; j++){
+		for(int i = 0; i < 7;i++) {
+			for(int j = 0; j < 7; j++){
 				cells[i][j].setX(i);
 				cells[i][j].setY(j);
-				if(i == 0 || j == 0 || i == 102 || j == 102) {
+				if(i == 0 || j == 0 || i == 6 || j == 6) {
 					cells[i][j].setState(-1);
 					cells[i][j].setVisited(1);
 					
@@ -35,8 +35,24 @@ public class Grid {
 				}
 			}
 		}
+		
+		
+		cells[3][2].setState(0);
+		cells[2][2].setState(0);
+		cells[4][2].setState(0);
+		//cells[5][2].setState(0);
+		//cells[4][4].setState(0);
+		
+		//System.out.println("GOAL STATE GRID " + cells[5][3].getVisited());
+		
+		
 	}
 	
+	public void setCellB(int x, int y) {
+		
+		cells[x][y].setState(0);
+		
+	}
 	
 	public int blocked(Cell c, int dir) {
 		
@@ -68,6 +84,15 @@ public class Grid {
 		return 0;
 	}
 	
+public int Visited(int x, int y) {
+		
+		if(cells[x][y].getVisited() == 1) {
+			return 1;
+		}
+		
+		return 0;
+	}
+	
 	public Cell getCell(int x, int y) {
 		
 		return cells[x][y];
@@ -76,7 +101,7 @@ public class Grid {
 	
 	public int outofBounds() {
 		
-		if(x == 0 || y == 0 || x == 102 || y == 102) {
+		if(x == 0 || y == 0 || x == 6 || y == 6) {
 			return 1;
 		}
 		
@@ -115,10 +140,41 @@ public class Grid {
 		return 0;
 	}
 	
+/*public int alreadyVisited(int dir, int x, int y) {
+		
+		if(dir == 0){
+			
+			if(cells[x][y-1].getVisited() == 1) {
+				return 1;
+			}
+			
+		
+		}else if(dir == 1) {
+			if(cells[x][y+1].getVisited() == 1) {
+				return 1;
+			}
+			
+			
+		}else if(dir == 2) {
+			if(cells[x+1][y].getVisited() == 1) {
+				return 1;
+			}
+			
+		}else if(dir == 3){
+			if(cells[x-1][y].getVisited() == 1) {
+				return 1;
+			}
+			
+		}
+			
+		
+		return 0;
+	}*/
+	
 	public int randomChance() {
 		Random r = new Random();
 		int rand = r.nextInt(10) + 1;
-		if(rand <= 7) {
+		if(rand <= 9) {
 			return 0;
 		}
 		
@@ -166,15 +222,15 @@ public class Grid {
 		
 		int dir; 
 		
-		x = r.nextInt(101) + 1;
-		y = r.nextInt(101) + 1;
+		x = r.nextInt(5) + 1;
+		y = r.nextInt(5) + 1;
 		
-		while(i < (101 * 101)){
+		while(i < (5 * 5)){
 			
 			while(cells[x][y].getVisited() == 1){
 				
-				x = r.nextInt(101) + 1;
-				y = r.nextInt(101) + 1;
+				x = r.nextInt(5) + 1;
+				y = r.nextInt(5) + 1;
 				
 				}
 				
@@ -189,9 +245,9 @@ public class Grid {
 			dir = r.nextInt(4);
 			
 			if((x == 1 && dir == 3)|| 
-				(x == 101 && dir == 2)||
+				(x == 5 && dir == 2)||
 				(y == 1 && dir == 0)||
-				(y == 101 && dir == 1)){ //dead end
+				(y == 5 && dir == 1)){ //dead end
 				
 			
 			 continue;

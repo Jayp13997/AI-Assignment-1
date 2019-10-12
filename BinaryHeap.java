@@ -14,7 +14,7 @@ public class BinaryHeap {
 	public static void main(String[] args) {
 		
 
-		BinaryHeap h = new BinaryHeap();
+		/*BinaryHeap h = new BinaryHeap();
 		Cell c = new Cell();
 		c.setF(10);
 		h.add(c);
@@ -56,8 +56,9 @@ public class BinaryHeap {
 		h.add(m);
 		
 		
-		h.delete();
-		h.delete();
+		h.delete(0);
+		h.delete(0);
+		h.delete(1);
 		
 	
 		for(int i = 0; i < h.size(); i++) {
@@ -69,7 +70,7 @@ public class BinaryHeap {
 		for(int i = 0; i < h.size(); i++) {
 			System.out.print(h.get(i) + " ");
 		}	
-		
+		*/
 	}
 	
 	/*public void initializeHeap(double f) {
@@ -79,6 +80,11 @@ public class BinaryHeap {
 	public int get(int index) {
 		//System.out.println(heap.get(index).getF());
 		return heap.get(index).getF();
+	}
+	
+	public Cell getCell(int index) {
+		//System.out.println(heap.get(index).getF());
+		return heap.get(index);
 	}
 	
 	public  int size() {
@@ -157,19 +163,30 @@ public class BinaryHeap {
 			}
 		}
 	}
+	
+	public void printHeap(){
 		
-	public Cell delete() {
+			
+		for(int i = 0; i < heap.size(); i++) {
+			System.out.println("HEAPPPPPPPPPP FROM METHOD " + heap.get(i).getX() + " " + heap.get(i).getY());
+			System.out.println("HEAPPPPPPPPPP FROM METHOD " + heap.get(i).getF());
+			
+		}	
+		
+	}
+		
+	public Cell delete(int n) {
 		if(heap.size() == 0) {
 			return null;
 		}
-		Cell ret = heap.get(0);
+		Cell ret = heap.get(n);
 		
 		int k = heap.size() - 1;
 		
-		heap.set(0, heap.get(k));
+		heap.set(n, heap.get(k));
 		heap.remove(k);
 		
-		heapify(heap.size(), 0);
+		heapify(heap.size(), n);
 		
 		return ret;
 	}	
