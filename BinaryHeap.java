@@ -1,135 +1,194 @@
 package structures;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class BinaryHeap {
+
 	
-	ArrayList<Node> heap = new ArrayList<Node>();
-	Node root;
-	Node end;
+	ArrayList<Cell> heap = new ArrayList<Cell>();
+	Cell root;
+	Cell end;
+		
 	
 	public static void main(String[] args) {
 		
-		Scanner sc = new Scanner("Enter instruction");
-		BinaryHeap h = new BinaryHeap();
+
+		/*BinaryHeap h = new BinaryHeap();
+		Cell c = new Cell();
+		c.setF(10);
+		h.add(c);
 		
-		String s = sc.next();
+		Cell d = new Cell();
+		d.setF(5);
+		h.add(d);
 		
-		while(!s.equals("exit")) {
-		Scanner u = new Scanner("Enter number");
-			
-		s = sc.next();
+		Cell e = new Cell();
+		e.setF(13);
+		h.add(e);
 		
-		if(s.equals("add")) {
+		Cell g = new Cell();
+		g.setF(4);
+		h.add(g);
+		
+		Cell u = new Cell();
+		u.setF(100);
+		h.add(u);
+		
+		Cell o = new Cell();
+		o.setF(100);
+		h.add(o);
+		
+		Cell j = new Cell();
+		j.setF(120);
+		h.add(j);
+		
+		Cell a = new Cell();
+		a.setF(100);
+		h.add(a);
+		
+		Cell b = new Cell();
+		b.setF(1);
+		h.add(b);
+		
+		Cell m = new Cell();
+		m.setF(2);
+		h.add(m);
+		
+		
+		h.delete(0);
+		h.delete(0);
+		h.delete(1);
+		
 	
-			int t = u.nextInt();
-			Node n = new Node(t);
-			h.add(n);
-			
-		}else if(s.equals("del")) {
-			Node ne = h.delete();
-			System.out.println("TOP PRIORITY IS: " + ne.f);
-			
-		}else if(s.equals("display")) {
-			
-			for(int i = 0; i < h.size(); i++) {
-				System.out.print(i + " ");
-			}
-			
-			System.out.println();
-			
-			for(int i = 0; i < h.size(); i++) {
-				System.out.print(h.get(i) + " ");
-			}
+		for(int i = 0; i < h.size(); i++) {
+			System.out.print(i + " ");
 		}
 			
+		System.out.println();
 			
-			
-		}
-		
+		for(int i = 0; i < h.size(); i++) {
+			System.out.print(h.get(i) + " ");
+		}	
+		*/
 	}
 	
-	public void initializeHeap(double f) {
-		
+	/*public void initializeHeap(double f) {
 		root = new Node(f);
+	}*/
 	
-		
+	public int get(int index) {
+		//System.out.println(heap.get(index).getF());
+		return heap.get(index).getF();
 	}
 	
-	public double get(int index) {
-		return heap.get(index).f;
+	public Cell getCell(int index) {
+		//System.out.println(heap.get(index).getF());
+		return heap.get(index);
 	}
 	
 	public  int size() {
 		return heap.size();
 	}
-	public void add(Node n){
+
+	public void add(Cell n){
 		heap.add(n);
 		 int k = heap.size() - 1;
+
 		while(k > 0) {
 			
-			double parent = heap.get((k-1)/2).f;
-			double child =	heap.get(k).f;
+			int parent = heap.get((k-1)/2).getF();
+			int child =	heap.get(k).getF();
+			
+			//System.out.println(parent + " " + child);
 			
 			if(child < parent){
-				Node temp = heap.get((k-1)/2);
+				Cell temp = heap.get((k-1)/2);
+				//System.out.println(temp.getF());
+				//System.out.println(temp.getF());
+				 //System.out.println(heap.get(k).getF());
 				heap.set((k-1)/2, heap.get(k));
-				heap.set(k, temp);
-				
+				heap.set(k, temp);	
 			}
-			
 			k = (k-1)/2;
-		
 		}
-			
-		
-		
 	}
 	
 	
-	
-	public Node delete(){
+	public void heapify(int n, int i) {
+		int parent = i;
+		int left = 2*i + 1;
+		int right = 2*i + 2;
 		
-		Node ret = heap.get(0);
+		if(left <= n-1 && right <= n-1) {
+			if(heap.get(parent).getF() <= heap.get(left).getF() && heap.get(parent).getF() <= heap.get(right).getF()) {
+				return;
+			}
+		
+			int smallest;
+			
+			if(heap.get(left).getF() <= heap.get(right).getF()) {
+				smallest = left;
+			}
+			else {
+				smallest = right;
+			}
+		
+			Cell temp = heap.get(smallest);
+			heap.set(smallest, heap.get(parent));
+			heap.set(parent, temp);
+		
+			heapify(n, smallest);
+		}
+		else if(left <= n-1 && right > n-1) {
+			if(heap.get(parent).getF() <= heap.get(left).getF()) {
+				return;
+			}
+			else {
+				Cell temp = heap.get(left);
+				heap.set(left, heap.get(parent));
+				heap.set(parent, temp);
+				return;
+			}
+		}
+		else if(right <= n-1 && left > n-1) {
+			if(heap.get(parent).getF() <= heap.get(right).getF()) {
+				return;
+			}
+			else {
+				Cell temp = heap.get(right);
+				heap.set(right, heap.get(parent));
+				heap.set(parent, temp);
+				return;
+			}
+		}
+	}
+	
+	public void printHeap(){
+		
+			
+		for(int i = 0; i < heap.size(); i++) {
+			System.out.println("HEAPPPPPPPPPP FROM METHOD " + heap.get(i).getX() + " " + heap.get(i).getY());
+			System.out.println("HEAPPPPPPPPPP FROM METHOD " + heap.get(i).getF());
+			
+		}	
+		
+	}
+		
+	public Cell delete(int n) {
+		if(heap.size() == 0) {
+			return null;
+		}
+		Cell ret = heap.get(n);
 		
 		int k = heap.size() - 1;
 		
-		heap.set(0, heap.get(k));
+		heap.set(n, heap.get(k));
 		heap.remove(k);
-		k = 0;
-		while(k < heap.size()) {
 		
-			double parent = heap.get(k).f;
-			
-			
-			if(heap.get((2*k + 1)).f < parent){
-				Node temp = heap.get(k);
-				heap.set(k, heap.get(2*k+1));
-				heap.set(2*k+1, temp);
-				k = 2*k+1;
-				
-			}else if(heap.get((2*k +2)).f < parent) {
-				
-			Node temp = heap.get(k);
-			heap.set(k, heap.get(2*k+2));
-			heap.set(2*k+2, temp);	
-			k = 2*k+2;
-		}else {
-			break;
-		}
-			
-			
-		
-		
-			
-		}
-		
-		
-		
+		heapify(heap.size(), n);
 		
 		return ret;
-	}
-	
+	}	
 
 }

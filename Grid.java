@@ -1,73 +1,365 @@
 package structures;
 
-import java.util.Random;
+import java.util.*;
 
 public class Grid {
 	
 	Cell cells[][]; 
 	int x, y;
+	Stack<Cell> s = new Stack<Cell>();
 	
 	
 	public Grid() {// creates grid and sets all cells as unvisited(state = 0)
-		cells = new Cell[101][101];
+		 cells = new Cell[7][7];
+		 
+		 for(int i = 0; i < 7; i++) {
+			 for(int j = 0; j < 7; j++) {
+				 cells[i][j] = new Cell();
+			 
+			 }
+		 }
 		
-		for(int i = 0; i < 101;i++) {
-			for(int j = 0; j < 101; j++) {
-				cells[i][j].state = 0;
+		for(int i = 0; i < 7;i++) {
+			for(int j = 0; j < 7; j++){
+				cells[i][j].setX(i);
+				cells[i][j].setY(j);
+				if(i == 0 || j == 0 || i == 6 || j == 6) {
+					cells[i][j].setState(-1);
+					cells[i][j].setVisited(1);
+					
+					
+				}else{
+				cells[i][j].setState(1);
+				cells[i][j].setVisited(0);
+				
+				}
 			}
 		}
+		
+		
+		cells[3][2].setState(0);
+		cells[2][2].setState(0);
+		cells[4][2].setState(0);
+		//cells[5][2].setState(0);
+		//cells[4][4].setState(0);
+		
+		//System.out.println("GOAL STATE GRID " + cells[5][3].getVisited());
+		
+		
 	}
 	
-	public void generateGrid() {
+	public void setCellB(int x, int y) {
 		
+		cells[x][y].setState(0);
+		
+	}
+	
+	public int blocked(Cell c, int dir) {
+		
+		if(dir == 0){
+				
+			return this.state(c.getX(), c.getY() - 1);
+		}else if (dir == 1){
+			
+			return this.state(c.getX(), c.getY() + 1);
+		}else if(dir == 2) {
+			
+		
+			return this.state(c.getX() + 1, c.getY());
+		}else{
+			
+			return this.state(c.getX() - 1, c.getY());
+		}
+		
+}
+			
+			
+	
+	public int state(int x, int y) {
+		
+		if(cells[x][y].getState() == 1) {
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+public int Visited(int x, int y) {
+		
+		if(cells[x][y].getVisited() == 1) {
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	public Cell getCell(int x, int y) {
+		
+		return cells[x][y];
+		
+	}
+	
+	public int outofBounds() {
+		
+		if(x == 0 || y == 0 || x == 6 || y == 6) {
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	//NEGATIVE 1 FOR CELLS THAT DONT EXIST
+	public int alreadyVisited(int dir) {
+		
+		if(dir == 0){
+			
+			if(cells[x][y-1].getVisited() == 1) {
+				return 1;
+			}
+			
+		
+		}else if(dir == 1) {
+			if(cells[x][y+1].getVisited() == 1) {
+				return 1;
+			}
+			
+			
+		}else if(dir == 2) {
+			if(cells[x+1][y].getVisited() == 1) {
+				return 1;
+			}
+			
+		}else if(dir == 3){
+			if(cells[x-1][y].getVisited() == 1) {
+				return 1;
+			}
+			
+		}
+			
+		
+		return 0;
+	}
+	
+/*public int alreadyVisited(int dir, int x, int y) {
+		
+		if(dir == 0){
+			
+			if(cells[x][y-1].getVisited() == 1) {
+				return 1;
+			}
+			
+		
+		}else if(dir == 1) {
+			if(cells[x][y+1].getVisited() == 1) {
+				return 1;
+			}
+			
+			
+		}else if(dir == 2) {
+			if(cells[x+1][y].getVisited() == 1) {
+				return 1;
+			}
+			
+		}else if(dir == 3){
+			if(cells[x-1][y].getVisited() == 1) {
+				return 1;
+			}
+			
+		}
+			
+		
+		return 0;
+	}*/
+	
+	public int randomChance() {
 		Random r = new Random();
-		//int x = r.nextInt(101);
-		//int y = r.nextInt(102);
+		int rand = r.nextInt(10) + 1;
+		if(rand <= 9) {
+			return 0;
+		}
 		
+		return 1;
 		
+	}
+	
+	public int deadEnd(Cell c){
+		int x = c.getX();
+		int y = c.getY();
+				
+		if(cells[x][y - 1].getVisited() == 1 && cells[x -1][y].getVisited() == 1 &&
+				cells[x][y + 1].getVisited() == 1 && cells[x + 1][y].getVisited() == 1){
+			
+			return 1;
+			
+		}
+			
+		return 0;
 		
+	}
+	
+	public Cell firstParent() {
 		
-	}	
+		while(s.size() != 0) {
+			
+			if(deadEnd(s.peek()) != 1) {
+				return s.peek();
+			}else{
+				s.pop();
+			}
+			
+		}
+		
+		return null;
+		
+	}
 	
 	public void visitRandomCell() {
 		Random r = new Random();
-		int dir = r.nextInt(4);
 		
-		while(true) {
+		
+		int i = 0;
+		
+		
+		int dir; 
+		
+		x = r.nextInt(5) + 1;
+		y = r.nextInt(5) + 1;
+		
+		while(i < (5 * 5)){
 			
-			if((x == 0 && dir == 0)|| 
-				(x == 100 && dir == 1)||
-				(y == 0 && dir == 3)||
-				(y == 100 && dir == 2)){ 
+			while(cells[x][y].getVisited() == 1){
 				
-			
-
-				
-			}
-				if(dir == 0) {//North
-			
-			
-				}else if(dir == 1) {//South 
-			
-				}else if(dir == 2) {//East
-			
-				}else if( dir == 3) {//West
+				x = r.nextInt(5) + 1;
+				y = r.nextInt(5) + 1;
 				
 				}
+				
+			cells[x][y].setState(1);
+			cells[x][y].setVisited(1);
+			s.push(cells[x][y]);
+			i += 1;
+			
+		
+		while(!s.isEmpty()) {
+			
+			dir = r.nextInt(4);
+			
+			if((x == 1 && dir == 3)|| 
+				(x == 5 && dir == 2)||
+				(y == 1 && dir == 0)||
+				(y == 5 && dir == 1)){ //dead end
+				
+			
+			 continue;
+				
+		
+			}else if(deadEnd(cells[x][y]) == 1){
+				
+				
+				
+					
+					x = s.peek().getX();
+					y = s.peek().getY();
+					
+					
+					
+				while(!s.empty() && deadEnd(cells[x][y]) == 1) {
+					
+					
+					s.pop();
+					
+					if(!s.isEmpty()) {
+					
+					x = s.peek().getX();
+					y = s.peek().getY();
+					}
+				
+				}
+				
+				
+				
+				 continue;
+			
+			}else if(alreadyVisited(dir) == 1) {
+				
+				 continue;
+			
+			}else{		
+				i++;
+				if(randomChance() == 1) {
+				
+					
+					if(dir == 0) {//North
+						y = y - 1;
+					
+						cells[x][y].setVisited(1);
+						cells[x][y].setState(0);
+						
+						//add to stack
+			
+				}else if(dir == 1) {//South 
+						y = y + 1;
+						cells[x][y].setVisited(1);
+						cells[x][y].setState(0);
+						
+						// add to stack
+			
+				}else if(dir == 2) {//East
+						x = x + 1;
+						cells[x][y].setVisited(1);
+						cells[x][y].setState(0);
+						
+					
+					//add to stack
+				}else if(dir == 3) {//West
+						x = x - 1;
+						cells[x][y].setVisited(1);
+						cells[x][y].setState(0);
+					
+						//add to stack
+				}
+			}else {
+				
+				
+				if(dir == 0) {//North
+					y = y - 1;
+					
+					
+					//add to stack
+		
+			}else if(dir == 1) {//South 
+					y = y + 1;
+					
+					
+					// add to stack
+		
+			}else if(dir == 2) {//East
+					x = x + 1;
+					
+					
+				
+				//add to stack
+			}else if(dir == 3) {//West
+					x = x - 1;
+					
+				
+					//add to stack
+			}
+				
+				cells[x][y].setState(1);
+				cells[x][y].setVisited(1);
+				s.push(cells[x][y]);
+				
+			}
+			
 			
 		
 		}
+		}
+		}
 		
 	
 	}
-	
-	public int isEdgeRow() {//-1 for bottom row, 0 for false, 1 for top row
-		if(x == 0   ){
-			return 1;
-		}else if(x == 100) {
-			return -1;
-		}
-	}
-	
+
 
 }
